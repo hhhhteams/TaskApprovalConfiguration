@@ -1,0 +1,314 @@
+﻿<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/TaskApprovalConfiguration/ManageTaskApprovalConfiguration.js?updated=15-03-2021"></script>
+<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Services/main.js"></script>
+<script type="text/ecmascript" src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/_layouts/15/clienttemplates.js"></script>
+<script type="text/ecmascript" src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/_layouts/15/clientforms.js"></script>
+<script type="text/ecmascript" src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/_layouts/15/clientpeoplepicker.js"></script>
+<script type="text/ecmascript" src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/_layouts/15/autofill.js"></script>
+<style>
+    #pageTitle a {
+        display: none !important;
+    }
+
+    #contentRow {
+        padding-top: 0px !important;
+        margin-top: -15px;
+    }
+</style>
+<div ng-controller="ManageTaskApprovalConfiguration" ng-cloak>
+    <div>
+        <h1 class="blue-clr">Manage Task Approval Configuration</h1>
+    </div>
+
+    <div class="col-sm-12 mt-5 panel panel-default pad8" ng-repeat="item in JSONItem">
+        <label class="full_width no-padding">{{item.DisplayTitle}} :</label>
+        <div class="col-sm-12 padL-0 PadR0  mt-10">
+            <label class=" col-sm-7"> Mail Recipient:</label>
+            <div class="col-sm-4 padL-0 mb-10">
+                <!--<div class="col-sm-12 padding-0 ">
+                    <div data-ng-disabled="false" ui-people data-ng-model="item.MailTo" pp-is-multiuser="false" pp-account-type="User,DL" id="UpdateApprovalProcessMail" class="form-control PeopleHeight"></div>
+                </div>-->
+                <select class="form-control searchbox_height" ng-model="item.MailTo">
+                    <option value="">Select</option>
+                    <option value="Approver">Approver</option>
+                    <option value="Author">Author</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-12 padL-0 PadR0  mt-10">
+            <label class=" col-sm-7">Status Column Will updated With Following value:</label>
+            <div class="col-sm-4 padL-0 mb-10">
+                <select class="form-control searchbox_height" ng-model="item.Value1" ng-change="PercentCompleted(item.Value1,item.Title)">
+                    <option value="">Select</option>
+                    <option value="For Approval">For Approval</option>
+                    <option value="Follow up">Follow up</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Acknowledged">Acknowledged</option>
+                    <option value="working on it">working on it</option>
+                    <option value="Re-Open">Re-Open</option>
+                    <option value="In QA Review">In QA Review</option>
+                    <option value="Task completed">Task completed</option>
+                    <option value="For Review">For Review</option>
+                    <option value="Follow-up later">Follow-up later</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-12 padL-0 PadR0  mt-10">
+            <label class=" col-sm-7"> Percent Complete Column Will updated With Following value:</label>
+            <div class="col-sm-4 padL-0 mb-10">
+                <input id="PercentCompleteSearch" type="text" ng-model="item.Value2" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="col-sm-12 padL-0 PadR0  mt-10">
+            <label class=" col-sm-7"> Shareweb Categories Column Will updated With Following value:</label>
+            <div class="col-sm-4 padL-0 mb-10">
+                <div class="col-sm-12 mb-10 padL-0 ">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-11 padding-0  ">
+                                <input type="text" class="form-control"
+                                       id="txtCategories" />
+                            </div>
+                            <div class="col-sm-1 no-padding mt-5">
+                                <img ng-src="{{baseUrl}}/SiteCollectionImages/ICONS/Foundation/EMMCopyTerm.png"
+                                     ng-click="openSmartTaxonomyPopup('Categories', Item.SharewebCategories);">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-11 padding-0">
+                        <div class="block" ng-repeat="category in smartCategories">
+                            {{category.Title}}
+                            <a class="hreflink" ng-click="removeCategories(category.Id)">
+                                <img ng-src="/_layouts/images/delete.gif">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="approved in item.Approved">
+            <label class="full_width no-padding">{{approved.DisplayTitle}} :</label>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7"> Mail Recipient:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <!--<div class="col-sm-12 padding-0 ">
+                        <div data-ng-disabled="false" ui-people data-ng-model="approved.MailTo" pp-is-multiuser="false" pp-account-type="User,DL" id="UpdateApprovedMail" class="form-control PeopleHeight"></div>
+                    </div>-->
+                    <select class="form-control searchbox_height" ng-model="approved.MailTo">
+                        <option value="">Select</option>
+                        <option value="Approver">Approver</option>
+                        <option value="Author">Author</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7">Status Column Will updated With Following value:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <select class="form-control searchbox_height" ng-model="approved.Value1" ng-change="PercentCompleted(approved.Value1,approved.Title)">
+                        <option value="">Select</option>
+                        <option value="For Approval">For Approval</option>
+                        <option value="Follow up">Follow up</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Acknowledged">Acknowledged</option>
+                        <option value="working on it">working on it</option>
+                        <option value="Re-Open">Re-Open</option>
+                        <option value="In QA Review">In QA Review</option>
+                        <option value="Task completed">Task completed</option>
+                        <option value="For Review">For Review</option>
+                        <option value="Follow-up later">Follow-up later</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7"> Percent Complete Column Will updated With Following value:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <input id="PercentCompleteSearch" type="text" ng-model="approved.Value2" class="form-control" readonly>
+                </div>
+            </div>
+
+        </div>
+        <div ng-repeat="reject in item.Reject">
+            <label class="full_width no-padding">{{reject.DisplayTitle}} :</label>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7"> Mail Recipient:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <!--<div class="col-sm-12 padding-0 ">
+                <div data-ng-disabled="false" ui-people data-ng-model="reject.MailTo" pp-is-multiuser="false" pp-account-type="User,DL" id="UpdateRejectMail" class="form-control PeopleHeight"></div>
+            </div>-->
+                    <select class="form-control searchbox_height" ng-model="reject.MailTo">
+                        <option value="">Select</option>
+                        <option value="Approver">Approver</option>
+                        <option value="Author">Author</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7">Status Column Will updated With Following value:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <select class="form-control searchbox_height" ng-model="reject.Value1" ng-change="PercentCompleted(reject.Value1,reject.Title)">
+                        <option value="">Select</option>
+                        <option value="For Approval">For Approval</option>
+                        <option value="Follow up">Follow up</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Acknowledged">Acknowledged</option>
+                        <option value="working on it">working on it</option>
+                        <option value="Re-Open">Re-Open</option>
+                        <option value="In QA Review">In QA Review</option>
+                        <option value="Task completed">Task completed</option>
+                        <option value="For Review">For Review</option>
+                        <option value="Follow-up later">Follow-up later</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7"> Percent Complete Column Will updated With Following value:</label>
+                <div class="col-sm-4 padL-0 mb-10">
+                    <input id="PercentCompleteSearch" type="text" ng-model="reject.Value2" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="col-sm-12 padL-0 PadR0  mt-10">
+                <label class=" col-sm-7"> Assigned To Column Will updated With Following value:</label>
+                <div class="col-sm-4 padL-0 mb-10">                  
+                    <select class="form-control searchbox_height" ng-model="reject.AssignedTo">
+                        <option value="">Select</option>                      
+                        <option value="Author">Author</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 mb-10 ">
+        <button type="button" class="btn btn-primary pull-right" ng-click="UpdateConfiguration()">Update Configuration</button>
+    </div>
+    <div id="SmartTaxonomyPopup" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="false" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="cancelSmartTaxonomyPopup()"
+                            style="min-width: 10px;">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        Select -{{SmartTaxonomyName}}
+                        <span class="pull-right NMt-7">
+                            <page-settings-info webpartid="'SelectCategories'">
+                            </page-settings-info>
+                        </span>
+                    </h4>
+                    <table class="ms-dialogHeader" cellspacing="0" cellpadding="0" border="0" width="100%"
+                           style="padding-top: 8px; padding-bottom: 10px;">
+                        <tbody>
+                            <tr class="">
+                                <td valign="middle" align="center"
+                                    style="width:0px; padding-left: 15px; padding-right: 15px;">
+                                    <img ng-src="{{baseUrl}}/SiteCollectionImages/ICONS/24/EMMDoubleTag.png" alt="">
+                                </td>
+                                <td class="ms-dialogHeaderDescription" valign="top" style="width:100%;">
+                                    <div id="selectTermDescription" class="none-wordbreak">
+
+                                        <table class="ms-dialogHeaderDescription">
+                                            <tbody>
+                                                <tr id="addNewTermDescription" class="">
+                                                    <td>New items are added under the currently selected item.</td>
+
+                                                    <td class="TaggingLinkWidth">
+                                                        <a style="cursor:pointer;" ng-click="gotomanagetaxonomy();">
+                                                            Add New Item
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="SendFeedbackTr">
+                                                    <td>Make a request or send feedback to the Term Set manager.</td>
+                                                    <td class="TaggingLinkWidth">
+                                                        <a href="mailto:e-i@eda.admin.ch">
+                                                            Send Feedback
+                                                        </a>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td class=" pull-right">
+                                    <button type="button" class="btn btn-primary"
+                                            ng-click="copySelectedSmartTaxonomy()">
+                                        OK
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12 padL-0 PadR0 mb-10 mt-10">
+
+                        <span ng-show="SmartTaxonomyName =='Categories'">
+                            <input type="text" class="form-control ui-autocomplete-input" id="txtCategories1"
+                                   autocomplete="off" placeholder="Search here"><span role="status" aria-live="polite"
+                                                                                      class="ui-helper-hidden-accessible"></span>
+                        </span>
+                    </div>
+
+                    <div class="col-sm-12 padL-0 PadR0">
+                        <div class="col-sm-12 ActivityBox" ng-show="SmartTaxonomyName =='Categories'">
+                            <span class="block" ng-repeat="item in smartCategories">
+                                {{item.Title}}<a class="hreflink" ng-click="removeCategories(item.Id)">
+                                    <img ng-src="/_layouts/images/delete.gif">
+                                </a>
+                            </span>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+                    <div class="divPanelBody col-sm-12 padL-0 PadR0">
+                        <nav id="nav_pop-up">
+                            <ul id="main-menu">
+                                <li ng-repeat="item in TaxonomyItems">
+                                    <a class="hreflink" id="Smart{{item.Id}}"
+                                       ng-click="selectItem(item,'Component',$index);">
+                                        <img ng-if="item.Item_x005F_x0020_Cover.Url != undefined"
+                                             style="height: 12px; width:18px;"
+                                             ng-src="{{item.Item_x005F_x0020_Cover.Url}}"> {{item.Title}}
+                                    </a>
+                                    <ul ng-if="item.childs.length>0" class="sub-menu clr" id="Test{{item.Id}}">
+                                        <li ng-repeat="child1 in item.childs">
+                                            <a class="hreflink" id="Bud{{child1.Id}}"
+                                               ng-click="selectItem(child1,'SubComponent');">
+                                                <img ng-if="child1.Item_x005F_x0020_Cover.Url != undefined"
+                                                     style="height: 12px; width:18px;"
+                                                     ng-src="{{child1.Item_x005F_x0020_Cover.Url}}"> {{child1.Title}}
+                                            </a>
+                                            <ul ng-if="child1.childs.length>0" class="sub-menu clr2"
+                                                id="Next{{child1.Id}}">
+                                                <li ng-repeat="child2 in child1.childs">
+                                                    <a class="hreflink" ng-click="selectItem(child2,'Feature');">
+                                                        <img ng-if="child2.Page_x002d_Title!=undefined && child2.ProfileType!=undefined"
+                                                             class="flag_icon" ng-src="{{child2.Item_x0020_Cover.Url}}">
+                                                        {{child2.Title}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="hreflink" ng-click="gotomanagetaxonomy();">Manage Smart Taxonomy</a>
+                    <button type="button" class="btn btn-primary" ng-click="copySelectedSmartTaxonomy()">OK</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
